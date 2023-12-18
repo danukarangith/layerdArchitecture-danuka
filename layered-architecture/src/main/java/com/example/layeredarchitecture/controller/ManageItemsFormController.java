@@ -1,7 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.ItemDAOImpl;
-import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 import com.jfoenix.controls.JFXButton;
@@ -74,7 +73,7 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> allItem = itemDao.getallItem();
+            ArrayList<ItemDTO> allItem = itemDao.getAll();
             for(ItemDTO dto : allItem ){
                 tblItems.getItems().add(
                         new ItemTM(
@@ -142,7 +141,7 @@ public class ManageItemsFormController {
             }
 
             ItemDAOImpl itemDao = new ItemDAOImpl();
-            itemDao.deleteItem(code);
+            itemDao.delete(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
@@ -182,7 +181,7 @@ public class ManageItemsFormController {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
 
-                boolean isSaved = itemDao.getSaveItem(new ItemDTO(code,description,unitPrice,qtyOnHand));
+                boolean isSaved = itemDao.save(new ItemDTO(code,description,unitPrice,qtyOnHand));
 
                 if(isSaved){
                     tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
@@ -201,7 +200,7 @@ public class ManageItemsFormController {
                 }
 
                 ItemDTO dto = new ItemDTO(code,description,unitPrice,qtyOnHand);
-                itemDao.updateItem(dto);
+                itemDao.update(dto);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -220,7 +219,7 @@ public class ManageItemsFormController {
 
 
     private boolean existItem(String code) throws SQLException, ClassNotFoundException {
-        return itemDao.existItem(code);
+        return itemDao.exist(code);
     }
 
 

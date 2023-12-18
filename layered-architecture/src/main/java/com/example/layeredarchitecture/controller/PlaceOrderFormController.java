@@ -1,6 +1,10 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.*;
+import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
+import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.OrderDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.OrderDetailDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -110,7 +114,7 @@ public class PlaceOrderFormController {
                             new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + newValue + "").show();
                         }
 
-                        CustomerDTO customerDTO = customerDAO.searchCustomer(newValue+"");
+                        CustomerDTO customerDTO = customerDAO.search(newValue+"");
 
                         txtCustomerName.setText(customerDTO.getName());
                     } catch (SQLException e) {
@@ -138,7 +142,7 @@ public class PlaceOrderFormController {
 //                        throw new NotFoundException("There is no such item associated with the id " + code);
                     }
 
-                    ItemDTO item = itemDAO.searchItem(newItemCode+"");
+                    ItemDTO item = itemDAO.search(newItemCode+"");
 
                     txtDescription.setText(item.getDescription());
                     txtUnitPrice.setText(item.getUnitPrice().setScale(2).toString());
@@ -209,7 +213,7 @@ public class PlaceOrderFormController {
 
     private void loadAllCustomerIds() {
         try {
-            ArrayList<CustomerDTO> dtoList = customerDAO.getAllCustomer();
+            ArrayList<CustomerDTO> dtoList = customerDAO.getAll();
 
             for(CustomerDTO dto:dtoList){
                 cmbCustomerId.getItems().add(dto.getId());
@@ -224,7 +228,7 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> dtoList = itemDAO.getallItem();
+            ArrayList<ItemDTO> dtoList = itemDAO.getAll();
 
             for(ItemDTO dto : dtoList){
                 cmbItemCode.getItems().add(dto.getCode());
@@ -351,7 +355,7 @@ public class PlaceOrderFormController {
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
-                if (!itemDAO.updateItem(item)) {
+                if (!itemDAO.update(item)) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
