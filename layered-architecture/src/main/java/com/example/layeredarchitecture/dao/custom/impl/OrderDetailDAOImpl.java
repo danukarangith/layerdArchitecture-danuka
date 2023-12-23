@@ -20,6 +20,8 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
         stm.setInt(4, detailDTO.getQty());
 
         return stm.executeUpdate() > 0;*/
-      return   SQLUtil.excecute("INSERT INTO orderdetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
+      return   SQLUtil.excecute("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)",orderId,detailDTO.getItemCode(),detailDTO.getUnitPrice()
+      ,detailDTO.getQty());
+
     }
 }

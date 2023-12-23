@@ -306,7 +306,7 @@ public class PlaceOrderFormController {
     public void txtQty_OnAction(ActionEvent actionEvent) {
     }
 
-    public void btnPlaceOrder_OnAction(ActionEvent actionEvent) {
+    public void btnPlaceOrder_OnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         boolean b = saveOrder(orderId, LocalDate.now(), cmbCustomerId.getValue(),
                 tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(tm.getCode(), tm.getQty(), tm.getUnitPrice())).collect(Collectors.toList()));
 
@@ -330,13 +330,20 @@ public class PlaceOrderFormController {
         Connection connection = null;
         try {
             connection = DBConnection.getDbConnection().getConnection();
+
             boolean isExists = orderDAO.isExists(orderId);
             /*if order id already exist*/
             if (isExists) {
 
             }
 
-            boolean isSaved = orderDAO.saveOrder(new OrderDTO(orderId, orderDate, customerId));
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setOrderId(orderId);
+            orderDTO.setOrderDate(orderDate);
+            orderDTO.setCustomerId(customerId);
+            connection.setAutoCommit(false);
+
+            boolean isSaved = orderDAO.saveOrder(orderDTO);
 
             if (!isSaved) {
                 connection.rollback();

@@ -2,6 +2,7 @@ package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.dao.custom.CustomerDAO;
 import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.custom.impl.QueryDAOImpl;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.jfoenix.controls.JFXButton;
@@ -40,6 +41,7 @@ public class ManageCustomersFormController {
 
     //property Injection
     CustomerDAO customerDAO = new CustomerDAOImpl();
+    QueryDAOImpl queryDAO = new QueryDAOImpl();
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -240,4 +242,7 @@ public class ManageCustomersFormController {
         return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
 
+    public QueryDAOImpl getQueryDAO() {
+        return queryDAO;
+    }
 }

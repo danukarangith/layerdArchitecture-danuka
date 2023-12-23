@@ -1,5 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.custom.impl.QueryDAOImpl;
+import com.example.layeredarchitecture.model.CustomerOrderDetailDTO;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -18,6 +20,8 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -103,7 +107,7 @@ public class MainFormController {
 
 
     @FXML
-    private void navigate(MouseEvent event) throws IOException {
+    private void navigate(MouseEvent event) throws IOException, SQLException, ClassNotFoundException {
         if (event.getSource() instanceof ImageView) {
             ImageView icon = (ImageView) event.getSource();
 
@@ -120,7 +124,20 @@ public class MainFormController {
                     root = FXMLLoader.load(this.getClass().getResource("/com/example/layeredarchitecture/place-order-form.fxml"));
                     break;
                 case "imgViewOrders":
-                    root = null;
+                    QueryDAOImpl queryDAO = new QueryDAOImpl();
+                    ArrayList<CustomerOrderDetailDTO> customerOrderDetailDTOS = queryDAO.customerOrderDetails();
+
+                    for (CustomerOrderDetailDTO customerOrderDetailDTO : customerOrderDetailDTOS){
+                        System.out.println(
+                                customerOrderDetailDTO.getOrderId()+" "+
+                                customerOrderDetailDTO.getCustomerName()+" "+
+                                customerOrderDetailDTO.getDate()+" " +
+                                customerOrderDetailDTO.getTotal() );
+
+
+                    }
+
+                    // root = null;
                     break;
             }
 

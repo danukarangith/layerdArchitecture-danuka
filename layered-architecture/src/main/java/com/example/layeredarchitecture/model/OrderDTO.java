@@ -23,6 +23,10 @@ public class OrderDTO  {
         this.orderTotal = orderTotal;
     }
 
+    public OrderDTO() {
+
+    }
+
     public String getOrderId() {
         return orderId;
     }

@@ -22,8 +22,8 @@ public class OrderDAOImpl implements OrderDAO {
 
         PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `orders` WHERE oid=?");
         stm.setString(1, orderId);*/
-        return SQLUtil.excecute("SELECT oid FROM `orders` WHERE oid=?");
-
+        ResultSet rst = SQLUtil.excecute("SELECT oid FROM `Orders` WHERE oid=?",orderId);
+       return rst.next();
        // return stm.executeQuery() != null;
     }
     @Override
@@ -36,7 +36,11 @@ public class OrderDAOImpl implements OrderDAO {
         stm.setString(3, dto.getCustomerId());
 
         return stm.executeUpdate() > 0;*/
+        System.out.println(dto.getOrderId());
 
-       return SQLUtil.excecute("INSERT INTO `orders` (oid, date, customerID) VALUES (?,?,?)");
+       return SQLUtil.excecute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",
+               dto.getOrderId(),
+               dto.getOrderDate(),
+               dto.getCustomerId());
     }
 }
