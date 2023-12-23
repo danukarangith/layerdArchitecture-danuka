@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.bo;
 
+import com.example.layeredarchitecture.dao.DAOFactory;
 import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
 import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
 import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
@@ -20,13 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceOrderBOImpl implements PlaceOrderBO {
-    OrderDAOImpl orderDAO = new OrderDAOImpl();
+    OrderDAOImpl orderDAO = (OrderDAOImpl) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ORDER);
     CustomerDAOImpl customerDAO = new CustomerDAOImpl();
     ItemDAOImpl itemDAO = new ItemDAOImpl();
 
     OrderDetailDAO orderDetailDAO = new OrderDetailDAOImpl();
     public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
-        Connection connection = null;
+        Connection connection = null ;
+
        /* try {
             connection = DBConnection.getDbConnection().getConnection();
 
