@@ -1,14 +1,15 @@
-package com.example.layeredarchitecture.bo;
+package com.example.layeredarchitecture.bo.custom;
 
+import com.example.layeredarchitecture.entity.Customer;
 import com.example.layeredarchitecture.model.CustomerDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface CustomerBO {
-     boolean save(CustomerDTO dto) throws SQLException, ClassNotFoundException;
+     boolean save(Customer entity) throws SQLException, ClassNotFoundException;
 
-     ArrayList<CustomerDTO> getAll() throws SQLException, ClassNotFoundException;
+     ArrayList<Customer> getAll() throws SQLException, ClassNotFoundException;
 
       boolean exist(String id) throws SQLException, ClassNotFoundException;
 
@@ -16,5 +17,5 @@ public interface CustomerBO {
 
      String generateId()throws SQLException, ClassNotFoundException;
 
-     boolean update(CustomerDTO dto) throws SQLException, ClassNotFoundException;
+     CustomerDTO update(Customer dto) throws SQLException, ClassNotFoundException;
 }
